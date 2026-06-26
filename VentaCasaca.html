@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vender Camiseta – Gloria Eterna </title>
+<link rel="stylesheet" href="style.css">
+<style>
+.vc-hero{
+  min-height:52vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:7rem 2rem 3rem;position:relative
+}
+.vc-hero h1{font-size:clamp(2.2rem,5vw,4rem);font-weight:900;line-height:1.1;margin-bottom:1.2rem;animation:fiu .8s ease .4s both}
+.vc-hero p{font-size:1rem;color:var(--gray);max-width:480px;margin:0 auto;line-height:1.7;animation:fiu .8s ease .6s both}
+.vc-wrap{max-width:660px;margin:0 auto;padding:2rem 2rem 5rem}
+.back-link{
+  display:inline-flex;align-items:center;gap:.4rem;
+  color:var(--b300);text-decoration:none;font-size:.88rem;
+  margin-bottom:2rem;transition:color .2s,gap .2s
+}
+.back-link:hover{color:var(--white);gap:.7rem}
+@media(max-width:640px){.vc-wrap{padding:1.5rem 1rem 4rem}}
+</style>
+</head>
+<body>
+
+<div id="particles"></div>
+
+<!-- NAVBAR -->
+<nav class="nav">
+  <div class="logo" onclick="location.href='index.html'" style="cursor:pointer">
+    <img src="logo.jpeg" alt="Gloria Eterna" class="logo-img">
+    <div class="logo-text">
+      <b>Gloria Eterna</b>
+      <small>Compra y Venta de camisetas</small>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="index.html#catalogo">Catálogo</a></li>
+    <li><a href="index.html#contacto">Contacto</a></li>
+    <li><a href="VentaCasaca.html" style="color:var(--gold)">Vender</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:.5rem">
+    <button class="menu-btn" id="menuBtn" onclick="toggleMenu()" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MENÚ MÓVIL -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="index.html#catalogo" onclick="closeMenu()">Catálogo</a>
+  <a href="index.html#contacto" onclick="closeMenu()">Contacto</a>
+  <a href="VentaCasaca.html" onclick="closeMenu()">Vender</a>
+</div>
+
+<!-- HERO -->
+<section class="vc-hero">
+  <div class="hero-badge" style="animation:fiu .8s ease .2s both">📸 Vendé tu camiseta fácil y rápido</div>
+  <h1><span class="hl">Vender</span><br>mi Camiseta</h1>
+  <p>Completá el formulario con tus datos y fotos. Te contactamos por WhatsApp a la brevedad.</p>
+</section>
+
+<!-- FORMULARIO -->
+<div class="vc-wrap">   
+  <div class="sell-form reveal">
+    <h3> Datos de tu camiseta</h3>
+    <p>Dejanos tu información y fotos. Te contactaremos pronto.</p>
+    <form id="sellForm" onsubmit="submitSell(event)">
+      <div class="fg">
+        <label>Tu nombre *</label>
+        <input type="text" id="sName" required placeholder="Ej: Juan Pérez">
+      </div>
+      <div class="fg">
+        <label>WhatsApp / Teléfono *</label>
+        <input type="tel" id="sPhone" required placeholder="Ej: +598 99 000 111">
+      </div>
+      <div class="fg">
+        <label>Describe tu camiseta</label>
+        <textarea id="sDesc" placeholder="Club, talla, temporada, condición…"></textarea>
+      </div>
+      <div class="fg">
+        <label>Fotos de tu camiseta</label>
+        <div class="photo-drop">
+          <input type="file" id="photoInput" accept="image/*" multiple onchange="handlePhotos(event)">
+          <div class="photo-drop-ico">📷</div>
+          <p>Tocá aquí para subir fotos<br><small>Podés elegir varias imágenes</small></p>
+        </div>
+        <div class="previews" id="previews"></div>
+      </div>
+      <button type="submit" class="submit-btn">Enviar consulta </button>
+    </form>
+  </div>
+
+  <div style="text-align:center;margin-top:2rem">
+    <a href="index.html" class="back-link">← Volver al catálogo</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Gloria Eterna Casacas</div>
+  <p>Las mejores camisetas de fútbol ⚽</p>
+  <p style="margin-top:.5rem">© 2026 Gloria Eterna Casacas.</p>
+</footer>
+
+<div class="toast-wrap" id="toasts"></div>
+
+<script>
+// ── STORAGE ───────────────────────────────────────────
+const K = {S:'gec_subs',PW:'gec_pw'};
+function load(key,fb){try{const r=localStorage.getItem(key);return r?JSON.parse(r):fb}catch{return fb}}
+function save(key,d){localStorage.setItem(key,JSON.stringify(d))}
+function getSubs(){return load(K.S,[])}
+function getPW(){return localStorage.getItem(K.PW)||'gloria2026'}
+
+// ── PARTICLES ─────────────────────────────────────────
+function initParticles(){
+  const el=document.getElementById('particles');
+  for(let i=0;i<40;i++){
+    const p=document.createElement('div');p.className='p';
+    p.style.left=Math.random()*100+'%';
+    const sz=(Math.random()*3+1)+'px';p.style.width=sz;p.style.height=sz;
+    p.style.setProperty('--d',(Math.random()*100-50)+'px');
+    p.style.animationDuration=(Math.random()*14+7)+'s';
+    p.style.animationDelay=(Math.random()*10)+'s';
+    el.appendChild(p);
+  }
+}
+
+// ── FORMULARIO VENDER ─────────────────────────────────
+let photos=[];
+
+function handlePhotos(e){
+  Array.from(e.target.files).forEach(f=>{
+    if(!f.type.startsWith('image/'))return;
+    const r=new FileReader();
+    r.onload=ev=>{photos.push(ev.target.result);renderPreviews()};
+    r.readAsDataURL(f);
+  });e.target.value='';
+}
+
+function renderPreviews(){
+  document.getElementById('previews').innerHTML=photos.map((s,i)=>`
+    <div class="prev-item">
+      <img src="${s}" alt="foto">
+      <button class="prev-rm" onclick="rmPhoto(${i})">✕</button>
+    </div>`).join('');
+}
+
+function rmPhoto(i){photos.splice(i,1);renderPreviews()}
+
+function submitSell(e){
+  e.preventDefault();
+  const name=document.getElementById('sName').value.trim();
+  const phone=document.getElementById('sPhone').value.trim();
+  if(!name||!phone){toast('Completá nombre y teléfono','err');return}
+  let subs=getSubs();
+  subs.unshift({id:Date.now(),name,phone,
+    desc:document.getElementById('sDesc').value.trim(),
+    photos:[...photos],
+    date:new Date().toLocaleDateString('es-UY',{day:'2-digit',month:'2-digit',year:'numeric'})
+  });
+  save(K.S,subs);
+  document.getElementById('sellForm').reset();photos=[];renderPreviews();
+  toast('✅ ¡Consulta enviada! Te contactaremos pronto','ok');
+}
+
+
+// ── TOAST ─────────────────────────────────────────────
+function toast(msg,type=''){
+  const el=document.createElement('div');el.className='toast '+(type||'');el.textContent=msg;
+  document.getElementById('toasts').appendChild(el);
+  setTimeout(()=>el.remove(),3100);
+}
+
+// ── SCROLL REVEAL ─────────────────────────────────────
+function initReveal(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
+  },{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+}
+
+// ── MENÚ MÓVIL ────────────────────────────────────────
+function toggleMenu(){
+  const btn=document.getElementById('menuBtn');
+  const nav=document.getElementById('mobileNav');
+  const open=nav.classList.contains('open');
+  btn.classList.toggle('open',!open);
+  nav.classList.toggle('open',!open);
+  document.body.style.overflow=open?'':'hidden';
+}
+function closeMenu(){
+  document.getElementById('menuBtn').classList.remove('open');
+  document.getElementById('mobileNav').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+// ── INIT ──────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',()=>{
+  initParticles();
+  initReveal();
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
+});
+</script>
+</body>
+</html>

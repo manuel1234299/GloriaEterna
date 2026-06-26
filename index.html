@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gloria Eterna </title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="particles"></div>
+
+<!-- NAVBAR -->
+<nav class="nav">
+  <div class="logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <img src="logo.jpeg" alt="Gloria Eterna" class="logo-img">
+    <div class="logo-text">
+      <b>Gloria Eterna</b>
+      <small>Venta y Compra de Camisetas</small>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#catalogo">Catálogo</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+    <li><a href="VentaCasaca.html">Vender</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:.5rem">
+    <button class="cart-btn" onclick="toggleCart()">
+      🛒<span class="cart-badge" id="cartBadge">0</span>
+    </button>
+    <button class="menu-btn" id="menuBtn" onclick="toggleMenu()" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MENÚ MÓVIL -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="#catalogo" onclick="closeMenu()">Catálogo</a>
+  <a href="#contacto" onclick="closeMenu()">Contacto</a>
+  <a href="VentaCasaca.html" onclick="closeMenu()">Vender</a>
+</div>
+
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">⭐ Las mejores camisetas de fútbol</div>
+  <h1><span class="hl">Gloria Eterna</span></h1>
+  <p>Colección exclusiva de camisetas de fútbol originales y de utileria. Encuentra la tuya y lleva la gloria a todas partes.</p>
+  <div class="hero-cta">
+    <button class="btn-p" onclick="document.getElementById('catalogo').scrollIntoView({behavior:'smooth'})">Ver Catálogo</button>
+    <button class="btn-g" onclick="location.href='VentaCasaca.html'">Vender mi camiseta</button>
+  </div>
+  <div class="hero-scroll"><span>↓</span><span>Explorar</span></div>
+</section>
+
+<!-- CATALOG -->
+<section id="catalogo" class="sec">
+  <div class="sec-title reveal">
+    <h2>Nuestro Catálogo</h2>
+    <p>Encontrá la camiseta perfecta para vos</p>
+    <div class="underline"></div>
+  </div>
+  <div class="filters-top reveal">
+    <div class="search-box">
+      <span class="search-ico">🔍</span>
+      <input type="text" id="searchInput" placeholder="Buscar camiseta, equipo..." oninput="filterCatalog()">
+    </div>
+    <button class="filter-fab" id="filterFab" onclick="openFilterDrawer()">
+      ⚙ Filtros<span class="fab-badge" id="fabBadge" style="display:none">0</span>
+    </button>
+  </div>
+  <div class="active-chips" id="activeChips"></div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<!-- CONTACT + SELL -->
+<div class="contact-sec" id="contacto">
+  <div class="sec" style="max-width:1100px">
+    <div class="sec-title reveal">
+      <h2>Contáctanos</h2>
+      <p>Estamos para ayudarte</p>
+      <div class="underline"></div>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <h3>¿Tienes una consulta?</h3>
+        <p>Escríbenos por cualquiera de nuestros canales. Te respondemos rápido y con gusto te ayudamos a encontrar la camiseta de tus sueños.</p>
+        <div class="ci-list">
+          <div class="ci-item">
+            <div class="ci-icon">📱</div>
+            <div><div class="ci-label">WhatsApp</div><div class="ci-val" id="cWA">+51 999 999 999</div></div>
+          </div>
+          <div class="ci-item">
+            <div class="ci-icon">📸</div>
+            <div><div class="ci-label">Instagram</div><div class="ci-val" id="cIG">@gloriaeterrnacasacas</div></div>
+          </div>
+          <div class="ci-item">
+            <div class="ci-icon">📍</div>
+            <div><div class="ci-label">Ubicación</div><div class="ci-val" id="cLoc">Lima, Perú</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sell-form reveal" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:1.5rem">
+        <div style="font-size:3.5rem">📸</div>
+        <h3 style="font-size:1.4rem">¿Tenés una camiseta para vender?</h3>
+        <p style="color:var(--gray);line-height:1.7">Dejanos tus datos y fotos. Revisamos tu camiseta y te contactamos por WhatsApp a la brevedad.</p>
+        <a href="VentaCasaca.html" class="btn-g" style="text-decoration:none;display:inline-block">Quiero vender mi camiseta →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Gloria Eterna Casacas</div>
+  <p>Las mejores camisetas de fútbol ⚽</p>
+  <p style="margin-top:.5rem">© 2026 Gloria Eterna Casacas.</p>
+  <div><span class="admin-hint" id="adminDot">●</span></div>
+</footer>
+
+<!-- CART OVERLAY + SIDEBAR -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-side" id="cartSide">
+  <div class="cart-hd">
+    <h3>🛒 Mi Carrito</h3>
+    <button class="close-btn" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-ft" id="cartFt" style="display:none">
+    <div class="cart-total"><span>Total:</span><span id="cartTotal">S/ 0.00</span></div>
+    <button class="checkout-btn" onclick="checkout()">Pedir por WhatsApp 📲</button>
+  </div>
+</div>
+
+<!-- PASSWORD MODAL -->
+<div class="overlay" id="pwModal">
+  <div class="modal">
+    <div class="modal-hd">
+      <h3>🔐 Administración</h3>
+      <button class="close-btn" onclick="closePW()">✕</button>
+    </div>
+    <p style="color:var(--gray);font-size:.9rem;margin-bottom:1rem">Ingresa la contraseña para acceder al panel.</p>
+    <div class="fg">
+      <label>Contraseña</label>
+      <input type="password" id="pwInput" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkPW()">
+    </div>
+    <button class="btn-p" onclick="checkPW()" style="width:100%;margin-top:.5rem">Ingresar</button>
+  </div>
+</div>
+
+<!-- ADMIN MODAL -->
+<div class="overlay" id="adminModal">
+  <div class="modal wide">
+    <div class="modal-hd">
+      <h3>⚙️ Panel de Administración</h3>
+      <button class="close-btn" onclick="closeAdmin()">✕</button>
+    </div>
+    <div class="admin-tabs">
+      <button class="atab active" onclick="aTab('add',this)">➕ Agregar</button>
+      <button class="atab" onclick="aTab('list',this)">📋 Camisetas</button>
+      <button class="atab" onclick="aTab('subs',this)">📬 Consultas</button>
+      <button class="atab" onclick="aTab('cfg',this)">🔧 Config</button>
+    </div>
+
+    <!-- ADD -->
+    <div id="tab-add">
+      <div class="fg"><label>Nombre de la camiseta *</label><input type="text" id="aN" placeholder="Ej: Camiseta Barcelona Home 2024"></div>
+      <div class="two-col">
+        <div class="fg"><label>Equipo / Club *</label><input type="text" id="aT" placeholder="Ej: FC Barcelona"></div>
+        <div class="fg"><label>Liga / Competición</label><input type="text" id="aL" placeholder="Ej: La Liga"></div>
+      </div>
+      <div class="two-col">
+        <div class="fg" id="aPGroup"><label>Precio</label><input type="number" id="aP" placeholder="850" min="0" step="1"></div>
+        <div class="fg">
+          <label>Talle *</label>
+          <div class="size-checks">
+            <label class="size-chk" onclick="selectSize(this)"><input type="radio" name="aSize" value="S">S</label>
+            <label class="size-chk" onclick="selectSize(this)"><input type="radio" name="aSize" value="M">M</label>
+            <label class="size-chk" onclick="selectSize(this)"><input type="radio" name="aSize" value="L">L</label>
+            <label class="size-chk" onclick="selectSize(this)"><input type="radio" name="aSize" value="XL">XL</label>
+          </div>
+        </div>
+      </div>
+      <div id="ofertaPanel" style="display:none;background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.25);border-radius:12px;padding:1rem;margin-bottom:.5rem">
+        <p style="font-size:.8rem;color:var(--gold);font-weight:600;margin-bottom:.75rem">Precios de oferta</p>
+        <div class="two-col">
+          <div class="fg" style="margin-bottom:0"><label>Precio original</label><input type="number" id="aPOriginal" placeholder="1200" min="0" step="1"></div>
+          <div class="fg" style="margin-bottom:0"><label>Precio rebajado</label><input type="number" id="aPRebajado" placeholder="850" min="0" step="1"></div>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Imagen *</label>
+        <div class="img-src-tabs">
+          <button type="button" class="img-tab active" onclick="switchImgTab('url',this)">🔗 Desde URL</button>
+          <button type="button" class="img-tab" onclick="switchImgTab('file',this)">📁 Desde dispositivo</button>
+        </div>
+        <div id="imgTabUrl">
+          <input type="url" id="aI" placeholder="https://… pega el enlace de la foto" oninput="previewImg()" style="margin-top:.4rem">
+        </div>
+        <div id="imgTabFile" style="display:none;margin-top:.4rem">
+          <div class="photo-drop" style="padding:1rem">
+            <input type="file" id="aImgFile" accept="image/*" onchange="handleAdminImg(event)">
+            <div style="font-size:1.5rem;margin-bottom:.3rem">📷</div>
+            <p style="font-size:.82rem;color:var(--gray)">Toca aquí para elegir una foto</p>
+          </div>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Vista previa</label>
+        <div id="aPreview" style="margin-top:.5rem;min-height:80px;background:rgba(30,58,138,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:.85rem">
+          Ingresa una URL o elige una foto
+        </div>
+      </div>
+      <div class="fg">
+        <label>Etiqueta</label>
+        <select id="aBadge" onchange="toggleSaleField()">
+          <option value="">Sin etiqueta</option>
+          <option value="Nuevo">🆕 Nuevo</option>
+          <option value="Oferta">🔥 Oferta</option>
+          <option value="Utilería">🎽 Utilería</option>
+          <option value="De Jugador">⭐Utileria utilizada por Jugador</option>
+           <option value="De Jugador">Version Jugador</option>
+
+        </select>
+      </div>
+      <div class="fg"><label>Descripción</label><textarea id="aDesc" placeholder="Ej: Camiseta original, poco uso, excelente estado. Talla M." style="min-height:70px"></textarea></div>
+      <div class="divider"></div>
+      <button class="btn-p" onclick="addCamiseta()" style="width:100%;padding:.85rem">➕ Agregar al catálogo</button>
+    </div>
+
+    <!-- LIST -->
+    <div id="tab-list" style="display:none">
+      <div id="ajList"></div>
+    </div>
+
+    <!-- SUBS -->
+    <div id="tab-subs" style="display:none">
+      <div id="subsList"></div>
+    </div>
+
+    <!-- CONFIG -->
+    <div id="tab-cfg" style="display:none">
+      <div class="fg"><label>WhatsApp de contacto</label><input type="text" id="cfgWA" placeholder="+51 999 999 999"></div>
+      <div class="fg"><label>Instagram</label><input type="text" id="cfgIG" placeholder="@tutienda"></div>
+      <div class="fg"><label>Ubicación</label><input type="text" id="cfgLoc" placeholder="Ciudad, País"></div>
+      <div class="fg"><label>Nueva contraseña (dejar vacío para no cambiar)</label><input type="password" id="cfgPW" placeholder="••••••••"></div>
+      <div class="divider"></div>
+      <button class="btn-p" onclick="saveConfig()" style="width:100%;padding:.85rem">💾 Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT CAMISETA MODAL -->
+<div class="overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-hd">
+      <h3>✏️ Editar camiseta</h3>
+      <button class="close-btn" onclick="closeEditCamiseta()">✕</button>
+    </div>
+    <p id="editName" style="font-weight:700;margin-bottom:1rem;color:var(--white);font-size:.95rem;line-height:1.4"></p>
+    <div class="fg">
+      <label>Etiqueta / Estado</label>
+      <select id="eBadge" onchange="toggleEditOferta()">
+        <option value="">Sin etiqueta</option>
+        <option value="Nuevo">Nuevo</option>
+        <option value="Oferta">Oferta</option>
+        <option value="Utilería">Utilería</option>
+        <option value="De Jugador">De Jugador</option>
+        <option value="Version Jugador">Version Jugador</option>
+      </select>
+    </div>
+    <div class="fg" id="ePGroup"><label>Precio</label><input type="number" id="eP" min="0" step="1" placeholder="850"></div>
+    <div id="eOfertaPanel" style="display:none;background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.25);border-radius:12px;padding:1rem;margin-bottom:.5rem">
+      <p style="font-size:.8rem;color:var(--gold);font-weight:600;margin-bottom:.75rem">Precios de oferta</p>
+      <div class="two-col">
+        <div class="fg" style="margin-bottom:0"><label>Precio original</label><input type="number" id="ePOriginal" min="0" step="1" placeholder="1200"></div>
+        <div class="fg" style="margin-bottom:0"><label>Precio rebajado</label><input type="number" id="ePRebajado" min="0" step="1" placeholder="850"></div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <button class="btn-p" onclick="saveEditCamiseta()" style="width:100%;padding:.85rem">Guardar cambios</button>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="overlay" id="detailModal">
+  <div class="modal detail-modal">
+    <button class="close-btn" onclick="closeDetail()" style="position:absolute;top:1rem;right:1rem;z-index:1">✕</button>
+    <div class="detail-grid">
+      <div class="detail-img-wrap">
+        <img id="dImg" src="" alt="">
+        <span id="dBadge" class="badge" style="display:none"></span>
+      </div>
+      <div class="detail-info">
+        <div id="dLeague" class="card-league" style="font-size:.8rem;margin-bottom:.4rem"></div>
+        <h2 id="dName" style="font-size:1.35rem;font-weight:800;margin-bottom:.75rem;line-height:1.3"></h2>
+        <div id="dSizes" class="size-tags" style="margin-bottom:1rem"></div>
+        <p id="dDesc" class="detail-desc"></p>
+        <div class="detail-price-wrap">
+          <span id="dPriceOld" class="price-old" style="display:none"></span>
+          <span id="dPrice" style="font-size:1.6rem;font-weight:800;color:var(--gold)"></span>
+        </div>
+        <button class="btn-p" id="dAddBtn" style="width:100%;margin-top:1.25rem;padding:1rem" onclick="addCartFromDetail()">🛒 Agregar al carrito</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- IMAGE VIEWER -->
+<div class="img-viewer" id="ivModal" onclick="closeIV()">
+  <button class="iv-close" onclick="closeIV()">✕</button>
+  <img id="ivImg" src="" alt="Vista ampliada" onclick="event.stopPropagation()">
+</div>
+
+<!-- FILTER DRAWER -->
+<div class="filter-overlay" id="filterOverlay" onclick="closeFilterDrawer()"></div>
+<div class="filter-drawer" id="filterDrawer">
+  <div class="drawer-handle"></div>
+  <div class="drawer-hd">
+    <h3>Filtros</h3>
+    <button class="close-btn" onclick="closeFilterDrawer()">✕</button>
+  </div>
+  <div class="drawer-body">
+    <div class="drawer-sec">
+      <div class="drawer-sec-title">Precio máximo</div>
+      <div class="price-range-wrap" style="justify-content:flex-start;flex-wrap:wrap">
+        <span class="price-range-edge">$0</span>
+        <input type="range" id="priceRange" min="0" max="10000" step="50" value="10000" oninput="setPriceRange(this.value)">
+        <span class="price-range-edge">$10.000</span>
+        <span class="price-range-val" id="priceRangeVal">$10.000 o más</span>
+      </div>
+    </div>
+    <div class="drawer-sec">
+      <div class="drawer-sec-title">Estado</div>
+      <div class="drawer-btns" id="badgeF">
+        <button class="filter-btn active" onclick="setBadge('all',this)">Todos</button>
+        <button class="filter-btn" onclick="setBadge('Nuevo',this)">Nuevo</button>
+        <button class="filter-btn" onclick="setBadge('Oferta',this)">Oferta</button>
+        <button class="filter-btn" onclick="setBadge('Utilería',this)">Utilería</button>
+        <button class="filter-btn" onclick="setBadge('De Jugador',this)">De Jugador</button>
+      </div>
+    </div>
+    <div class="drawer-sec">
+      <div class="drawer-sec-title">Talle</div>
+      <div class="drawer-btns" id="sizeF">
+        <button class="filter-btn active" onclick="setSize('all',this)">Todos</button>
+        <button class="filter-btn" onclick="setSize('S',this)">S</button>
+        <button class="filter-btn" onclick="setSize('M',this)">M</button>
+        <button class="filter-btn" onclick="setSize('L',this)">L</button>
+        <button class="filter-btn" onclick="setSize('XL',this)">XL</button>
+      </div>
+    </div>
+  </div>
+  <div class="drawer-ft">
+    <button class="btn-g" style="flex:1;padding:.85rem" onclick="clearAllFilters()">Limpiar todo</button>
+    <button class="btn-p" style="flex:1;padding:.85rem" onclick="closeFilterDrawer()">Ver resultados</button>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toasts"></div>
+
+<script>
+
+// ── STORAGE ──────────────────────────────────────────────
+const K = {J:'gec_camisetas',C:'gec_cart',S:'gec_subs',CFG:'gec_cfg',PW:'gec_pw'};
+
+const DEFAULT_J = [
+  {id:1,name:'Camiseta Real Madrid Home 2024',team:'Real Madrid',league:'La Liga',price:85,size:'M, L, XL',badge:'Nuevo',image:'https://placehold.co/300x400/1a2a6c/93c5fd?text=Real+Madrid'},
+  {id:2,name:'Camiseta Alianza Lima Titular',team:'Alianza Lima',league:'Liga 1',price:45,size:'S, M, L',badge:'Popular',image:'https://placehold.co/300x400/1a2a6c/fcd34d?text=Alianza+Lima'},
+  {id:3,name:'Camiseta Argentina 2022 Campeón',team:'Argentina',league:'Copa del Mundo',price:120,size:'M, L',badge:'Exclusivo',image:'https://placehold.co/300x400/0a1628/93c5fd?text=Argentina+2022'},
+  {id:4,name:'Camiseta Universitario Visitante',team:'Universitario',league:'Liga 1',price:40,size:'S, M, L, XL',badge:'',image:'https://placehold.co/300x400/2d3748/e2e8f0?text=Universitario'},
+  {id:5,name:'Camiseta Manchester City Home',team:'Manchester City',league:'Premier League',price:95,size:'M, XL',badge:'Oferta',image:'https://placehold.co/300x400/1e40af/bfdbfe?text=Man+City'},
+  {id:6,name:'Camiseta Flamengo 2023',team:'Flamengo',league:'Brasileirão',price:65,size:'S, M, L',badge:'',image:'https://placehold.co/300x400/7f1d1d/fca5a5?text=Flamengo'}
+];
+
+function load(key,fb){try{const r=localStorage.getItem(key);return r?JSON.parse(r):fb}catch{return fb}}
+function save(key,d){localStorage.setItem(key,JSON.stringify(d))}
+function getJ(){const s=load(K.J,null);if(s===null){save(K.J,DEFAULT_J);return DEFAULT_J}return s}
+function getC(){return load(K.C,[])}
+function getSubs(){return load(K.S,[])}
+function getCfg(){return load(K.CFG,{wa:'+51 999 999 999',ig:'@gloriaeterrnacasacas',loc:'Lima, Perú'})}
+function getPW(){return localStorage.getItem(K.PW)||'gloria2026'}
+
+// ── PARTICLES ────────────────────────────────────────────
+function initParticles(){
+  const el=document.getElementById('particles');
+  for(let i=0;i<40;i++){
+    const p=document.createElement('div');p.className='p';
+    p.style.left=Math.random()*100+'%';
+    const sz=(Math.random()*3+1)+'px';p.style.width=sz;p.style.height=sz;
+    p.style.setProperty('--d',(Math.random()*100-50)+'px');
+    p.style.animationDuration=(Math.random()*14+7)+'s';
+    p.style.animationDelay=(Math.random()*10)+'s';
+    el.appendChild(p);
+  }
+}
+
+// ── CATALOG ──────────────────────────────────────────────
+let curMaxPrice=10000, curSort='default', curSearch='', curSize='all', curBadge='all';
+
+function esc(s){
+  if(s===null||s===undefined)return'';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderCatalog(){
+  let jj=getJ();
+  if(curSearch) jj=jj.filter(j=>
+    j.name.toLowerCase().includes(curSearch)||
+    j.team.toLowerCase().includes(curSearch)||
+    (j.league||'').toLowerCase().includes(curSearch));
+  if(curMaxPrice<10000) jj=jj.filter(j=>j.price<=curMaxPrice);
+  if(curBadge!=='all') jj=jj.filter(j=>j.badge===curBadge);
+  if(curSize!=='all') jj=jj.filter(j=>
+    (j.size||'').split(',').map(s=>s.trim()).includes(curSize));
+  if(curSort==='asc')jj.sort((a,b)=>a.price-b.price);
+  else if(curSort==='desc')jj.sort((a,b)=>b.price-a.price);
+
+  const g=document.getElementById('grid');
+  if(!jj.length){
+    g.innerHTML='<div class="empty"><div class="ico">🔍</div><h3>Sin resultados</h3><p>Prueba otros filtros.</p></div>';
+    return;
+  }
+  g.innerHTML=jj.map((j,i)=>`
+    <div class="card" style="animation-delay:${i*.07}s;cursor:pointer" onclick="openDetail(${j.id})">
+      <div class="card-img">
+        <img src="${esc(j.image)}" alt="${esc(j.name)}" loading="lazy"
+          onerror="this.src='https://placehold.co/300x400/1a2a6c/93c5fd?text=Sin+imagen'">
+        ${j.badge&&!(j.badge==='Nuevo'&&j.createdAt&&Date.now()-j.createdAt>6048e5)?`<span class="badge">${esc(j.badge)}</span>`:''}
+      </div>
+      <div class="card-body">
+        <div class="card-league">${esc(j.team)}${j.league?' · '+esc(j.league):''}</div>
+        <div class="card-name" title="${esc(j.name)}">${esc(j.name)}</div>
+        ${j.size?`<div class="size-tags">${j.size.split(',').map(s=>s.trim()).filter(Boolean).map(s=>`<span class="size-tag${s===curSize?' match':''}">${esc(s)}</span>`).join('')}</div>`:''}
+        <div class="card-foot">
+          <div class="card-price">
+            ${j.originalPrice?`<span class="price-old">$ ${(+j.originalPrice).toFixed(0)}</span>`:''}
+            $ ${(+j.price).toFixed(0)}
+          </div>
+          <button class="add-btn" id="ab${j.id}" data-id="${j.id}" onclick="event.stopPropagation();addCart(${j.id})">🛒</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function filterCatalog(){
+  const raw=document.getElementById('searchInput').value.trim();
+  if(raw.toLowerCase()==='admin'){
+    document.getElementById('searchInput').value='';
+    curSearch='';renderCatalog();openPW();return;
+  }
+  curSearch=raw.toLowerCase();renderCatalog();
+}
+// ── FILTER DRAWER ────────────────────────────────────────
+function openFilterDrawer(){
+  document.getElementById('filterDrawer').classList.add('open');
+  document.getElementById('filterOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeFilterDrawer(){
+  document.getElementById('filterDrawer').classList.remove('open');
+  document.getElementById('filterOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+function clearAllFilters(){
+  curMaxPrice=10000;curBadge='all';curSize='all';
+  document.getElementById('priceRange').value=10000;
+  setPriceRange(10000);
+  document.querySelectorAll('#badgeF .filter-btn').forEach((b,i)=>b.classList.toggle('active',i===0));
+  document.querySelectorAll('#sizeF .filter-btn').forEach((b,i)=>b.classList.toggle('active',i===0));
+  renderCatalog();renderChips();updateFabCount();
+}
+function renderChips(){
+  const chips=[];
+  if(curMaxPrice<10000) chips.push({label:'Hasta $'+Number(curMaxPrice).toLocaleString('es'),rm:'resetPriceChip()'});
+  if(curBadge!=='all') chips.push({label:curBadge,rm:"setBadge('all',document.querySelector('#badgeF .filter-btn'))"});
+  if(curSize!=='all') chips.push({label:'Talle '+curSize,rm:"setSize('all',document.querySelector('#sizeF .filter-btn'))"});
+  const el=document.getElementById('activeChips');
+  if(!chips.length){el.innerHTML='';return;}
+  let html=chips.map(c=>`<span class="achip">${esc(c.label)}<button class="achip-rm" onclick="${c.rm}">✕</button></span>`).join('');
+  if(chips.length>1) html+=`<button class="achip achip-clear" onclick="clearAllFilters()">Limpiar todo ✕</button>`;
+  el.innerHTML=html;
+}
+function updateFabCount(){
+  let n=0;
+  if(curMaxPrice<10000)n++;if(curBadge!=='all')n++;if(curSize!=='all')n++;
+  const b=document.getElementById('fabBadge');
+  b.textContent=n;b.style.display=n>0?'':'none';
+}
+function resetPriceChip(){
+  curMaxPrice=10000;
+  document.getElementById('priceRange').value=10000;
+  setPriceRange(10000);
+}
+function setPriceRange(val){
+  curMaxPrice=+val;
+  const isMax=+val>=10000;
+  document.getElementById('priceRangeVal').textContent=isMax?'$10.000 o más':'Hasta $'+Number(val).toLocaleString('es');
+  document.getElementById('priceRange').style.setProperty('--pct',(+val/10000*100)+'%');
+  renderCatalog();renderChips();updateFabCount();
+}
+function setSort(s,btn){curSort=s;document.querySelectorAll('#sortF .filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderCatalog()}
+function setSize(s,btn){curSize=s;document.querySelectorAll('#sizeF .filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderCatalog();renderChips();updateFabCount()}
+function setBadge(b,btn){curBadge=b;document.querySelectorAll('#badgeF .filter-btn').forEach(x=>x.classList.remove('active'));btn.classList.add('active');renderCatalog();renderChips();updateFabCount()}
+function toggleChk(lbl){lbl.classList.toggle('checked');lbl.querySelector('input').checked=lbl.classList.contains('checked')}
+function selectSize(lbl){
+  document.querySelectorAll('.size-chk').forEach(l=>l.classList.remove('checked'));
+  lbl.classList.add('checked');lbl.querySelector('input').checked=true;
+}
+
+// ── CART ─────────────────────────────────────────────────
+function addCart(id){
+  const j=getJ().find(x=>x.id===id);if(!j)return;
+  let c=getC();const ex=c.find(x=>x.id===id);
+  ex?ex.qty++:c.push({id,qty:1});
+  save(K.C,c);updateBadge();renderCart();
+  const btn=document.getElementById('ab'+id);
+  if(btn){btn.classList.add('added');btn.textContent='✓';
+    setTimeout(()=>{btn.classList.remove('added');btn.textContent='🛒'},1200)}
+  toast('✅ Camiseta agregada al carrito','ok');
+}
+
+function removeCart(id){let c=getC().filter(x=>x.id!==id);save(K.C,c);updateBadge();renderCart()}
+
+function qtyCart(id,d){
+  let c=getC();const it=c.find(x=>x.id===id);
+  if(!it)return;it.qty=Math.max(1,it.qty+d);
+  save(K.C,c);renderCart();updateBadge();
+}
+
+function updateBadge(){
+  const n=getC().reduce((s,i)=>s+i.qty,0);
+  const b=document.getElementById('cartBadge');
+  b.textContent=n;b.classList.toggle('show',n>0);
+}
+
+function renderCart(){
+  const c=getC(),jj=getJ();
+  const el=document.getElementById('cartItems');
+  const ft=document.getElementById('cartFt');
+  if(!c.length){
+    el.innerHTML='<div class="cart-empty"><div class="ico">🛒</div><p style="margin-top:.5rem">Tu carrito está vacío</p></div>';
+    ft.style.display='none';return;
+  }
+  let total=0;
+  el.innerHTML=c.map(it=>{
+    const j=jj.find(x=>x.id===it.id);if(!j)return'';
+    const lt=j.price*it.qty;total+=lt;
+    return`<div class="ci">
+      <img src="${esc(j.image)}" alt="${esc(j.name)}" onerror="this.src='https://placehold.co/60x80/1a2a6c/93c5fd?text=?'">
+      <div class="ci-info">
+        <div class="ci-name">${esc(j.name)}</div>
+        <div class="ci-team">${esc(j.team)}</div>
+        <div class="ci-ctrl">
+          <button class="qty-btn" onclick="qtyCart(${j.id},-1)">−</button>
+          <span class="qty-n">${it.qty}</span>
+          <button class="qty-btn" onclick="qtyCart(${j.id},1)">+</button>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.25rem">
+        <button class="ci-del" onclick="removeCart(${j.id})">🗑</button>
+        <span class="ci-price">$ ${lt.toFixed(0)}</span>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('cartTotal').textContent='$ '+total.toFixed(0);
+  ft.style.display='block';
+}
+
+function toggleCart(){
+  const s=document.getElementById('cartSide'),o=document.getElementById('cartOverlay');
+  const open=s.classList.contains('open');
+  if(!open)renderCart();
+  s.classList.toggle('open',!open);o.classList.toggle('open',!open);
+  document.body.style.overflow=open?'':'hidden';
+}
+
+function checkout(){
+  const c=getC(),jj=getJ(),cfg=getCfg();if(!c.length)return;
+  let msg='*Pedido - Gloria Eterna Casacas*\n\n';let total=0;
+  c.forEach(it=>{const j=jj.find(x=>x.id===it.id);if(!j)return;
+    const lt=j.price*it.qty;total+=lt;
+    msg+=`- ${j.name} x${it.qty} = $ ${lt.toFixed(0)}\n`;});
+  msg+=`\n*Total: $ ${total.toFixed(0)}*`;
+  const ph=(cfg.wa||'').replace(/\D/g,'');
+  window.open(`https://wa.me/${ph}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+
+// ── ADMIN ─────────────────────────────────────────────────
+function openPW(){document.getElementById('pwModal').classList.add('open');setTimeout(()=>document.getElementById('pwInput').focus(),300)}
+function closePW(){document.getElementById('pwModal').classList.remove('open');document.getElementById('pwInput').value=''}
+function checkPW(){
+  if(document.getElementById('pwInput').value===getPW()){closePW();openAdmin()}
+  else{toast('Contraseña incorrecta','err');document.getElementById('pwInput').value='';document.getElementById('pwInput').focus()}
+}
+
+function openAdmin(){document.getElementById('adminModal').classList.add('open');loadCfgFields();renderAJList()}
+function closeAdmin(){document.getElementById('adminModal').classList.remove('open')}
+
+// ── EDIT CAMISETA ─────────────────────────────────────────
+let editingId=null;
+
+function openEditCamiseta(id){
+  const j=getJ().find(x=>x.id===id);if(!j)return;
+  editingId=id;
+  document.getElementById('editName').textContent=j.name;
+  document.getElementById('eBadge').value=j.badge||'';
+  const isOffer=j.badge==='Oferta';
+  document.getElementById('ePGroup').style.display=isOffer?'none':'';
+  document.getElementById('eOfertaPanel').style.display=isOffer?'':'none';
+  document.getElementById('eP').value=isOffer?'':(j.price||'');
+  document.getElementById('ePOriginal').value=j.originalPrice||'';
+  document.getElementById('ePRebajado').value=isOffer?j.price:'';
+  document.getElementById('editModal').classList.add('open');
+}
+
+function closeEditCamiseta(){
+  document.getElementById('editModal').classList.remove('open');
+  editingId=null;
+}
+
+function toggleEditOferta(){
+  const isOffer=document.getElementById('eBadge').value==='Oferta';
+  document.getElementById('ePGroup').style.display=isOffer?'none':'';
+  document.getElementById('eOfertaPanel').style.display=isOffer?'':'none';
+}
+
+function saveEditCamiseta(){
+  if(!editingId)return;
+  const jj=getJ();const idx=jj.findIndex(x=>x.id===editingId);if(idx===-1)return;
+  const badge=document.getElementById('eBadge').value;
+  let price,originalPrice=null;
+  if(badge==='Oferta'){
+    price=parseFloat(document.getElementById('ePRebajado').value);
+    const orig=parseFloat(document.getElementById('ePOriginal').value);
+    if(!isNaN(orig)&&orig>0) originalPrice=orig;
+  } else {
+    price=parseFloat(document.getElementById('eP').value);
+  }
+  if(isNaN(price)||price<=0){toast('El precio debe ser mayor a 0','err');return}
+  jj[idx].badge=badge;
+  jj[idx].price=price;
+  if(originalPrice) jj[idx].originalPrice=originalPrice;
+  else delete jj[idx].originalPrice;
+  if(badge==='Nuevo'&&!jj[idx].createdAt) jj[idx].createdAt=Date.now();
+  if(badge!=='Nuevo') delete jj[idx].createdAt;
+  save(K.J,jj);
+  closeEditCamiseta();
+  renderCatalog();renderAJList();
+  toast('Camiseta actualizada','ok');
+}
+
+function aTab(name,btn){
+  ['add','list','subs','cfg'].forEach(t=>document.getElementById('tab-'+t).style.display=t===name?'':'none');
+  document.querySelectorAll('.atab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  if(name==='list')renderAJList();
+  if(name==='subs')renderSubs();
+  if(name==='cfg')loadCfgFields();
+}
+
+function previewImg(){
+  const url=document.getElementById('aI').value.trim();
+  const el=document.getElementById('aPreview');
+  if(url){el.innerHTML=`<img src="${esc(url)}" style="max-height:130px;border-radius:8px;object-fit:cover"
+    onerror="this.parentElement.innerHTML='<span style=color:var(--gray)>No se pudo cargar la imagen</span>'">`}
+  else el.textContent='Ingresa una URL para ver la vista previa';
+}
+
+let adminImgData='';
+
+function handleAdminImg(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    adminImgData=ev.target.result;
+    document.getElementById('aPreview').innerHTML=`<img src="${adminImgData}" style="max-height:130px;border-radius:8px;object-fit:cover">`;
+  };
+  r.readAsDataURL(f);
+}
+
+function switchImgTab(tab,btn){
+  document.querySelectorAll('.img-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('imgTabUrl').style.display=tab==='url'?'':'none';
+  document.getElementById('imgTabFile').style.display=tab==='file'?'':'none';
+  if(tab==='url') adminImgData='';
+}
+
+function toggleSaleField(){
+  const isOffer=document.getElementById('aBadge').value==='Oferta';
+  document.getElementById('aPGroup').style.display=isOffer?'none':'';
+  document.getElementById('ofertaPanel').style.display=isOffer?'':'none';
+  if(!isOffer){
+    document.getElementById('aPOriginal').value='';
+    document.getElementById('aPRebajado').value='';
+  }
+}
+
+function addCamiseta(){
+  const name=document.getElementById('aN').value.trim();
+  const team=document.getElementById('aT').value.trim();
+  const league=document.getElementById('aL').value.trim();
+  const badge=document.getElementById('aBadge').value;
+  const sizeEl=document.querySelector('input[name="aSize"]:checked');
+  const size=sizeEl?sizeEl.value:'';
+  const image=adminImgData||document.getElementById('aI').value.trim();
+  const desc=document.getElementById('aDesc').value.trim();
+
+  let price, originalPrice=null;
+  if(badge==='Oferta'){
+    price=parseFloat(document.getElementById('aPRebajado').value);
+    const orig=parseFloat(document.getElementById('aPOriginal').value);
+    if(!isNaN(orig)&&orig>0) originalPrice=orig;
+  } else {
+    price=parseFloat(document.getElementById('aP').value);
+  }
+
+  if(!name||!team||!image){toast('Completa nombre, equipo e imagen','err');return}
+  if(isNaN(price)||price<=0){toast('El precio debe ser mayor a 0','err');return}
+
+  const jj=getJ();
+  const entry={id:Date.now(),name,team,league,price,size,image,badge};
+  if(badge==='Nuevo') entry.createdAt=Date.now();
+  if(originalPrice) entry.originalPrice=originalPrice;
+  if(desc) entry.desc=desc;
+  jj.push(entry);
+  save(K.J,jj);
+
+  ['aN','aT','aL','aP','aPOriginal','aPRebajado','aI','aBadge','aDesc'].forEach(id=>document.getElementById(id).value='');
+  document.querySelectorAll('input[name="aSize"]').forEach(r=>{r.checked=false;r.closest('.size-chk').classList.remove('checked')});
+  document.getElementById('aPGroup').style.display='';
+  document.getElementById('ofertaPanel').style.display='none';
+  document.getElementById('aPreview').textContent='Ingresa una URL o elige una foto';
+  adminImgData='';
+  renderCatalog();toast('Camiseta agregada al catálogo','ok');
+}
+
+function renderAJList(){
+  const jj=getJ();const el=document.getElementById('ajList');
+  if(!jj.length){el.innerHTML='<p style="color:var(--gray);text-align:center;padding:2rem">No hay camisetas aún.</p>';return}
+  el.innerHTML=`<p style="font-size:.85rem;color:var(--gray);margin-bottom:1rem">${jj.length} camiseta(s) en el catálogo</p>`+
+  jj.map(j=>`<div class="aj-item">
+    <img src="${esc(j.image)}" alt="${esc(j.name)}" onerror="this.src='https://placehold.co/45x60/1a2a6c/93c5fd?text=?'">
+    <div class="aj-info">
+      <div class="nm">${esc(j.name)}</div>
+      <div class="sub">${esc(j.team)}${j.league?' · '+esc(j.league):''}</div>
+      <div class="pr">$ ${(+j.price).toFixed(0)}${j.size?' · '+esc(j.size):''}${j.badge?` · <span style="color:var(--gold);font-weight:600">${esc(j.badge)}</span>`:''}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:.3rem;flex-shrink:0">
+      <button class="edit-btn" onclick="openEditCamiseta(${j.id})">✏️ Editar</button>
+      <button class="del-btn" data-id="${j.id}">🗑 Eliminar</button>
+    </div>
+  </div>`).join('');
+
+  document.getElementById('ajList').addEventListener('click',function(e){
+    const btn=e.target.closest('.del-btn');if(!btn)return;
+    const id=+btn.dataset.id;
+    const j=getJ().find(x=>x.id===id);if(!j)return;
+    if(confirm(`¿Eliminar "${j.name}"?\nEsta acción no se puede deshacer.`)){
+      save(K.J,getJ().filter(x=>x.id!==id));
+      save(K.C,getC().filter(x=>x.id!==id));
+      updateBadge();renderCatalog();renderAJList();
+      toast('Camiseta eliminada','ok');
+    }
+  },{once:true});
+}
+
+function renderSubs(){
+  const subs=getSubs();const el=document.getElementById('subsList');
+  if(!subs.length){el.innerHTML='<p style="color:var(--gray);text-align:center;padding:2rem">No hay consultas aún.</p>';return}
+  el.innerHTML=`<p style="font-size:.85rem;color:var(--gray);margin-bottom:1rem">${subs.length} consulta(s) recibida(s)</p>`+
+  subs.map(s=>`<div class="sub-card${s.contacted?' sub-contacted':''}">
+    <div class="sub-card-hd">
+      <div>
+        <div class="sub-name">${esc(s.name)}${s.contacted?'<span class="sub-tag">✓ Contactado</span>':''}</div>
+        <div class="sub-meta">📱 ${esc(s.phone)} · 📅 ${esc(s.date)}</div>
+      </div>
+      <div class="sub-actions">
+        <button class="sub-btn sub-btn-ok" onclick="contactSub(${s.id})" title="Contactar por WhatsApp">✓</button>
+        <button class="sub-btn sub-btn-del" onclick="deleteSub(${s.id})" title="Eliminar consulta">✕</button>
+      </div>
+    </div>
+    ${s.desc?`<div class="sub-desc">${esc(s.desc)}</div>`:''}
+    ${s.photos&&s.photos.length?`<div class="sub-photos">${s.photos.map((p,i)=>`<img src="${p}" data-src="${p}" alt="foto ${i+1}">`).join('')}</div>`:''}
+  </div>`).join('');
+
+  el.querySelectorAll('.sub-photos img').forEach(img=>{
+    img.addEventListener('click',()=>openIV(img.dataset.src));
+  });
+}
+
+function deleteSub(id){
+  if(!confirm('¿Eliminar esta consulta?'))return;
+  save(K.S,getSubs().filter(s=>s.id!==id));
+  renderSubs();toast('Consulta eliminada','ok');
+}
+
+function contactSub(id){
+  const subs=getSubs();
+  const s=subs.find(x=>x.id===id);if(!s)return;
+  const ph=(s.phone||'').replace(/\D/g,'');
+  const msg=`Hola ${s.name}, te contactamos desde Gloria Eterna Casacas por tu consulta de venta.`;
+  window.open(`https://wa.me/${ph}?text=${encodeURIComponent(msg)}`,'_blank');
+  s.contacted=true;
+  save(K.S,subs);renderSubs();
+}
+
+function loadCfgFields(){
+  const c=getCfg();
+  document.getElementById('cfgWA').value=c.wa||'';
+  document.getElementById('cfgIG').value=c.ig||'';
+  document.getElementById('cfgLoc').value=c.loc||'';
+  document.getElementById('cfgPW').value='';
+}
+
+function saveConfig(){
+  const cfg={wa:document.getElementById('cfgWA').value.trim(),
+    ig:document.getElementById('cfgIG').value.trim(),
+    loc:document.getElementById('cfgLoc').value.trim()};
+  save(K.CFG,cfg);
+  const np=document.getElementById('cfgPW').value;
+  if(np)localStorage.setItem(K.PW,np);
+  document.getElementById('cWA').textContent=cfg.wa;
+  document.getElementById('cIG').textContent=cfg.ig;
+  document.getElementById('cLoc').textContent=cfg.loc;
+  toast('✅ Configuración guardada','ok');
+}
+
+// ── DETAIL MODAL ─────────────────────────────────────────
+let currentDetail=null;
+
+function openDetail(id){
+  const j=getJ().find(x=>x.id===id);if(!j)return;
+  currentDetail=id;
+  document.getElementById('dImg').src=j.image;
+  document.getElementById('dImg').onerror=function(){this.src='https://placehold.co/300x400/1a2a6c/93c5fd?text=Sin+imagen'};
+  const badge=document.getElementById('dBadge');
+  if(j.badge){badge.textContent=j.badge;badge.style.display=''}
+  else badge.style.display='none';
+  document.getElementById('dLeague').textContent=(j.team||'')+(j.league?' · '+j.league:'');
+  document.getElementById('dName').textContent=j.name;
+  const sizes=document.getElementById('dSizes');
+  sizes.innerHTML=j.size?j.size.split(',').map(s=>`<span class="size-tag">${esc(s.trim())}</span>`).join(''):'';
+  const desc=document.getElementById('dDesc');
+  desc.textContent=j.desc||'';
+  desc.style.display=j.desc?'':'none';
+  const po=document.getElementById('dPriceOld');
+  if(j.originalPrice){po.textContent='$ '+(+j.originalPrice).toFixed(0);po.style.display=''}
+  else po.style.display='none';
+  document.getElementById('dPrice').textContent='$ '+(+j.price).toFixed(0);
+  document.getElementById('detailModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeDetail(){
+  document.getElementById('detailModal').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function addCartFromDetail(){
+  if(!currentDetail)return;
+  addCart(currentDetail);
+  closeDetail();
+}
+
+// ── IMAGE VIEWER ──────────────────────────────────────────
+function openIV(src){document.getElementById('ivImg').src=src;document.getElementById('ivModal').classList.add('open')}
+function closeIV(){document.getElementById('ivModal').classList.remove('open')}
+
+// ── TOAST ─────────────────────────────────────────────────
+function toast(msg,type=''){
+  const el=document.createElement('div');el.className='toast '+(type||'');el.textContent=msg;
+  document.getElementById('toasts').appendChild(el);
+  setTimeout(()=>el.remove(),3100);
+}
+
+// ── SCROLL REVEAL ─────────────────────────────────────────
+function initReveal(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
+  },{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+}
+
+// ── MENÚ MÓVIL ────────────────────────────────────────────
+function toggleMenu(){
+  const btn=document.getElementById('menuBtn');
+  const nav=document.getElementById('mobileNav');
+  const open=nav.classList.contains('open');
+  btn.classList.toggle('open',!open);
+  nav.classList.toggle('open',!open);
+  document.body.style.overflow=open?'':'hidden';
+}
+function closeMenu(){
+  document.getElementById('menuBtn').classList.remove('open');
+  document.getElementById('mobileNav').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+// ── INIT ──────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',()=>{
+  initParticles();
+  renderCatalog();
+  updateBadge();
+  initReveal();
+
+  const cfg=getCfg();
+  document.getElementById('cWA').textContent=cfg.wa;
+  document.getElementById('cIG').textContent=cfg.ig;
+  document.getElementById('cLoc').textContent=cfg.loc;
+
+  document.getElementById('pwModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closePW()});
+  document.getElementById('adminModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeAdmin()});
+  document.getElementById('editModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeEditCamiseta()});
+  document.getElementById('detailModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeDetail()});
+
+  document.addEventListener('keydown',e=>{
+    if(e.key!=='Escape')return;
+    closeAdmin();closePW();closeIV();closeDetail();closeEditCamiseta();closeFilterDrawer();closeMenu();
+    if(document.getElementById('cartSide').classList.contains('open'))toggleCart();
+  });
+});
+</script>
+</body>
+</html>
